@@ -1,12 +1,12 @@
-SensEmBERT: Context-Enhanced Sense Embeddings for Multilingual Word Sense Disambiguation
+CSI: A Coarse Sense Inventory for 85% WSD.
 
-SensEmBERT is licensed under a Creative Commons Attribution-Noncommercial-Share 
+This work is licensed under a Creative Commons Attribution-Noncommercial-Share 
 Alike 4.0 License
 
 If you use these resources, please refer to the following paper:
 
-Bianca Scarlini, Tommaso Pasini and Roberto Navigli.
-SensEmBERT: Context-Enhanced Sense Embeddings for Multilingual Word Sense Disambiguation.
+Caterina Lacerra, Michele Bevilacqua, Tommaso Pasini and Roberto Navigli.
+CSI: A Coarse Sense Inventory for 85% WSD.
 In Proceedings of the Thirty-Fourth Conference on Artificial Intelligence (AAAI 2020), New York, USA, 2020
 
 By exercising the Licensed Rights (defined below), You accept and agree to be bound by 

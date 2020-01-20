@@ -14,7 +14,7 @@ class ConfigAllWords(Config):
         super(Config, self).__init__()
         self.inventory = inventory_name
         self.model_name = model_name
-        if self.inventory!="sensekeys":
+        if self.inventory!="sensekey":
             self.finegrained = False
         else:
             self.finegrained = True
