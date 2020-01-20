@@ -1,5 +1,6 @@
 # CSI: A Coarse Sense Inventory for 85% WSD 
 
+                                CSI: A Coarse Inventory for 85% WSD
                 Caterina Lacerra, Michele Bevilacqua, Tommaso Pasini and Roberto Navigli    
                                      Sapienza, University of Rome
                                     Department of Computer Science
