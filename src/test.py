@@ -10,13 +10,13 @@ from src.training import process_labels, process_tokens
 
 def test(config, epoch_to_load, lr=1e-4, batch_size = 64):
     inventory = config.inventory
-    gold_folder = os.path.join(config.common_folder, 'gold/{}/'.format(inventory))
+    gold_folder = os.path.join(config.data_folder, 'gold/{}/'.format(inventory))
 
     test_list = config.tests
     exp_folder = config.experiment_folder
     dev_name = config.dev_name
-    text_input_folder = os.path.join(config.common_folder, 'input/text_files/{}/'.format(inventory))
-    input_folder = os.path.join(config.common_folder, 'input/matrices/{}/'.format(inventory))
+    text_input_folder = os.path.join(config.data_folder, 'input/text_files/{}/'.format(inventory))
+    input_folder = os.path.join(config.data_folder, 'input/matrices/{}/'.format(inventory))
 
     mapping = pkl.load(open(config.mapping_path,'rb'))
     domains_vocab_path = os.path.join(text_input_folder, 'domains.pkl')
@@ -117,14 +117,14 @@ def test(config, epoch_to_load, lr=1e-4, batch_size = 64):
     print('ALL', np.round(cor / tot, 3))
 
 def test_one_out(config, epoch_to_load, lr=1e-4):
-    common_folder = config.common_folder
+    data_folder = config.data_folder
     exp_folder = config.experiment_folder
     inventory = config.inventory
-    gold_folder = os.path.join(common_folder, 'gold/{}/'.format(inventory))
+    gold_folder = os.path.join(data_folder, 'gold/{}/'.format(inventory))
     test_list = config.tests
     dev_name = config.dev_name
-    text_input_folder = os.path.join(common_folder, 'input/text_files/{}/'.format(inventory))
-    input_folder = os.path.join(common_folder,'input/matrices/{}/'.format(inventory))
+    text_input_folder = os.path.join(data_folder, 'input/text_files/{}/'.format(inventory))
+    input_folder = os.path.join(data_folder,'input/matrices/{}/'.format(inventory))
 
     domains_vocab_path = os.path.join(text_input_folder, 'domains.pkl')
     domains_vocab = pkl.load(open(domains_vocab_path, 'rb'))
@@ -192,14 +192,14 @@ def test_one_out(config, epoch_to_load, lr=1e-4):
 def test_few_shot(config, epoch_to_load, k, lr=1e-4):
 
     inventory = config.inventory
-    common_folder = config.common_folder
+    data_folder = config.data_folder
     exp_folder = config.experiment_folder
     test_list = config.tests
     dev_name = config.dev_name
 
-    gold_folder = os.path.join(common_folder,'gold/{}/'.format(inventory))
-    text_input_folder = os.path.join(common_folder,'input/text_files/{}/'.format(inventory))
-    input_folder = os.path.join(common_folder, 'input/matrices/{}/'.format(inventory))
+    gold_folder = os.path.join(data_folder,'gold/{}/'.format(inventory))
+    text_input_folder = os.path.join(data_folder,'input/text_files/{}/'.format(inventory))
+    input_folder = os.path.join(data_folder, 'input/matrices/{}/'.format(inventory))
     input_semcor_k = os.path.join(text_input_folder, 'semcor_input_{}.txt'.format(k))
 
     domains_vocab_path = os.path.join(config.all_words_folder, 'domains.pkl')

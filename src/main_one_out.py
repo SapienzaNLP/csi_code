@@ -9,18 +9,18 @@ import src.preprocessing as preprocessing
 
 
 def prepare_data(config):
-    corpus_folder = config.corpus_folder
-    gold_folder = os.path.join(config.common_folder, 'gold/{}/'.format(config.inventory))
+    wsd_data_folder = config.wsd_data_folder
+    gold_folder = os.path.join(config.data_folder, 'gold/{}/'.format(config.inventory))
     all_words_mapping_coarse = pickle.load(open(config.mapping_path, 'rb'))
 
     mapping_output, dev_lemmas, test_lemmas = preprocessing.create_data_one_out(config)
     for testname in config.tests:
         if testname!=config.dev_name:
-            utils.getGoldFilesMappedOneOut(os.path.join(corpus_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
+            utils.getGoldFilesMappedOneOut(os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
                                            os.path.join(gold_folder,'{}.gold.txt'.format(testname)),
                                            all_words_mapping_coarse, test_lemmas)
         else:
-            utils.getGoldFilesMappedOneOut(os.path.join(corpus_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
+            utils.getGoldFilesMappedOneOut(os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
                                            os.path.join(gold_folder,'{}.gold.txt'.format(testname)),
                                            all_words_mapping_coarse, dev_lemmas)
 

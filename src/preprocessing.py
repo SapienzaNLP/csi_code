@@ -445,8 +445,8 @@ def clean_input(words,  domains, domains_idx, tokens, folder_dump, set_name):
 
 def create_data(config):
     output_mapping = pkl.load(open(config.mapping_path, 'rb'))
-    text_input_folder = os.path.join(config.common_folder, 'input', 'text_files', config.inventory)
-    input_folder = os.path.join(config.common_folder, 'input', 'matrices', config.inventory)
+    text_input_folder = os.path.join(config.data_folder, 'input', 'text_files', config.inventory)
+    input_folder = os.path.join(config.data_folder, 'input', 'matrices', config.inventory)
     test_list = [config.training_name]
     for x in config.tests:
         test_list.append(x)
@@ -459,9 +459,9 @@ def create_data(config):
             training = False
 
         print('parsing xml file')
-        readXML(set_name, os.path.join(config.corpus_folder, '{}/{}.data.xml'.format(set_name, set_name)),
+        readXML(set_name, os.path.join(config.wsd_data_folder, '{}/{}.data.xml'.format(set_name, set_name)),
                 output_mapping, os.path.join(text_input_folder, '{}_input.txt'.format(set_name)),
-                os.path.join(config.corpus_folder, '{}/{}.gold.key.txt'.format(set_name, set_name)),
+                os.path.join(config.wsd_data_folder, '{}/{}.gold.key.txt'.format(set_name, set_name)),
                 text_input_folder, training=training)
 
         words_sequence = buildInputSequences(os.path.join(text_input_folder, '{}_input_words.pkl'.format(set_name)),
@@ -498,9 +498,9 @@ def create_data(config):
 def create_data_one_out(config,):
     training_name = config.training_name
     inventory = config.inventory
-    corpus_path = config.corpus_folder
-    one_out_text_input_folder = os.path.join(config.common_folder, 'input', 'text_files', inventory)
-    one_out_input_folder = os.path.join(config.common_folder, 'input', 'matrices', inventory)
+    wsd_data_path = config.wsd_data_folder
+    one_out_text_input_folder = os.path.join(config.data_folder, 'input', 'text_files', inventory)
+    one_out_input_folder = os.path.join(config.data_folder, 'input', 'matrices', inventory)
     test_names = config.tests
     all_words_mapping_coarse = pkl.load(open(config.mapping_path, 'rb'))
     output_mapping, dev_lemmas, test_lemmas = utils.buildOneOutDictionary(config)
@@ -517,15 +517,15 @@ def create_data_one_out(config,):
             training = False
         print('parsing xml file')
         if set_name!=config.dev_name:
-            readXMLoneOut(set_name, os.path.join(corpus_path,'{}/{}.data.xml'.format(set_name, set_name)),
+            readXMLoneOut(set_name, os.path.join(wsd_data_path,'{}/{}.data.xml'.format(set_name, set_name)),
                       output_mapping, all_words_mapping_coarse, os.path.join(one_out_text_input_folder, '{}_input.txt'.format(set_name)),
-                      os.path.join(corpus_path,'{}/{}.gold.key.txt'.format(set_name, set_name)),
+                      os.path.join(wsd_data_path,'{}/{}.gold.key.txt'.format(set_name, set_name)),
                       one_out_text_input_folder, training=training, test_lemmas=test_lemmas)
 
         else:
-            readXMLoneOut(set_name, os.path.join(corpus_path,'{}/{}.data.xml'.format(set_name, set_name)),
+            readXMLoneOut(set_name, os.path.join(wsd_data_path,'{}/{}.data.xml'.format(set_name, set_name)),
                           output_mapping, all_words_mapping_coarse, os.path.join(one_out_text_input_folder, '{}_input.txt'.format(set_name)),
-                          os.path.join(corpus_path,'{}/{}.gold.key.txt'.format(set_name, set_name)),
+                          os.path.join(wsd_data_path,'{}/{}.gold.key.txt'.format(set_name, set_name)),
                           one_out_text_input_folder, training=training, test_lemmas=dev_lemmas)
 
         words_sequence = buildInputSequences(os.path.join(one_out_text_input_folder, '{}_input_words.pkl'.format(set_name)),
@@ -558,32 +558,32 @@ def create_data_few_shot(config):
     test_names = config.tests
     training_name = config.training_name
     sensekey2domains = pkl.load(open(config.mapping_path, 'rb'))
-    text_input_folder = os.path.join(config.common_folder, 'input/text_files/{}/'.format(config.inventory))
-    input_folder = os.path.join(config.common_folder, 'input/matrices/{}/'.format(config.inventory))
+    text_input_folder = os.path.join(config.data_folder, 'input/text_files/{}/'.format(config.inventory))
+    input_folder = os.path.join(config.data_folder, 'input/matrices/{}/'.format(config.inventory))
     all_words_text_folder = config.all_words_folder
     dev_path = os.path.join(config.one_out_folder, 'dev_lemmas.yml')
     test_path = os.path.join(config.one_out_folder, 'test_lemmas.yml')
-    corpus_folder = config.corpus_folder
+    wsd_data_folder = config.wsd_data_folder
 
     dev_lemmas = yaml.safe_load(open(dev_path))
     test_lemmas = yaml.safe_load(open(test_path))
 
     for k in [3,5,10]:
-        readXMLFewShot(training_name, os.path.join(corpus_folder, '{}/{}.data.xml'.format(training_name, training_name)),
+        readXMLFewShot(training_name, os.path.join(wsd_data_folder, '{}/{}.data.xml'.format(training_name, training_name)),
                        sensekey2domains, os.path.join(text_input_folder, '{}_input_{}.txt'.format(training_name, k)),
-                       os.path.join(corpus_folder, '{}/{}.gold.key.txt'.format(training_name, training_name)),
+                       os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(training_name, training_name)),
                        text_input_folder, training=True, test_lemmas=test_lemmas, dev_lemmas=dev_lemmas, k=k)
 
     for test in test_names:
         if test!=config.dev_name:
-            readXMLFewShot(test, os.path.join(corpus_folder, '{}/{}.data.xml'.format(test, test)),
+            readXMLFewShot(test, os.path.join(wsd_data_folder, '{}/{}.data.xml'.format(test, test)),
                        sensekey2domains, os.path.join(text_input_folder, '{}_input.txt'.format(test)),
-                       os.path.join(corpus_folder, '{}/{}.gold.key.txt'.format(test, test)),
+                       os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(test, test)),
                        text_input_folder, training=False, test_lemmas=test_lemmas, dev_lemmas=None, k=None)
         else:
-            readXMLFewShot(test, os.path.join(corpus_folder, '{}/{}.data.xml'.format(test, test)),
+            readXMLFewShot(test, os.path.join(wsd_data_folder, '{}/{}.data.xml'.format(test, test)),
                            sensekey2domains, os.path.join(text_input_folder, '{}_input.txt'.format(test)),
-                           os.path.join(corpus_folder, '{}/{}.gold.key.txt'.format(test, test)),
+                           os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(test, test)),
                            text_input_folder, training=False, test_lemmas=dev_lemmas, dev_lemmas=None, k=None)
 
     test_list = [training_name]

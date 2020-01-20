@@ -66,11 +66,11 @@ def getGoldFilesMappedOneOut(path_gold_fg, path_gold_new, mapping_output, test_l
 
 def define_folders(config):
     models = os.path.join(config.experiment_folder, 'weights')
-    gold_folder = os.path.join(config.common_folder, 'gold', config.inventory)
+    gold_folder = os.path.join(config.data_folder, 'gold', config.inventory)
     results_folder = os.path.join(config.experiment_folder, 'results')
     path_logs = os.path.join(config.experiment_folder, "logs")
-    text_input_folder = os.path.join(config.common_folder, 'input','text_files', config.inventory)
-    input_folder = os.path.join(config.common_folder, 'input', 'matrices', config.inventory)
+    text_input_folder = os.path.join(config.data_folder, 'input','text_files', config.inventory)
+    input_folder = os.path.join(config.data_folder, 'input', 'matrices', config.inventory)
     list_folder = [models, path_logs, gold_folder, text_input_folder, input_folder, results_folder]
     for folder in list_folder:
         if not os.path.exists(folder):
@@ -79,11 +79,11 @@ def define_folders(config):
 
 def define_folders_few_shot(config):
     models = os.path.join(config.experiment_folder, 'weights')
-    gold_folder = os.path.join(config.common_folder, 'gold', config.inventory)
+    gold_folder = os.path.join(config.data_folder, 'gold', config.inventory)
     results_folder = os.path.join(config.experiment_folder, 'results')
     path_logs = os.path.join(config.experiment_folder, "logs")
-    text_input_folder = os.path.join(config.common_folder, 'input', 'text_files', config.inventory)
-    input_folder = os.path.join(config.common_folder, 'input', 'matrices', config.inventory)
+    text_input_folder = os.path.join(config.data_folder, 'input', 'text_files', config.inventory)
+    input_folder = os.path.join(config.data_folder, 'input', 'matrices', config.inventory)
     temp_list_folder = [models, path_logs, gold_folder, text_input_folder, input_folder]
     list_folder = temp_list_folder.copy()
     list_folder.append(results_folder)
@@ -243,22 +243,22 @@ def buildOneOutDictionary(config):
     all_words_folder = config.all_words_folder
     mapping_coarse_all = pickle.load(open(config.mapping_path, 'rb'))
 
-    one_out_input_folder = os.path.join(config.common_folder, 'input', 'text_files', inventory)
+    one_out_input_folder = os.path.join(config.data_folder, 'input', 'text_files', inventory)
 
     folder_dicts = os.path.split(config.mapping_path)[0]
     csi = pickle.load(open(os.path.join(folder_dicts, 'sensekey2csi.pkl'), 'rb'))
     wnd = pickle.load(open(os.path.join(folder_dicts, 'sensekey2wndomains.pkl'), 'rb'))
     lex = pickle.load(open(os.path.join(folder_dicts, 'sensekey2supersenses.pkl'), 'rb'))
 
-    if os.path.exists(os.path.join(config.common_folder,'dev_lemmas.yml')) and \
-            os.path.exists(os.path.join(config.common_folder, 'test_lemmas.yml')):
+    if os.path.exists(os.path.join(config.data_folder,'dev_lemmas.yml')) and \
+            os.path.exists(os.path.join(config.data_folder, 'test_lemmas.yml')):
         print('existing lemmas')
-        if os.path.exists(os.path.join(config.common_folder, '{}.pkl'.format(inventory))):
+        if os.path.exists(os.path.join(config.data_folder, '{}.pkl'.format(inventory))):
             print('existing mapping in', one_out_input_folder)
         else:
             print('building reduced mapping')
-            dev_lemmas =  yaml.load(open(os.path.join(config.common_folder, 'dev_lemmas.yml')), Loader=yaml.SafeLoader)
-            test_lemmas = yaml.load(open(os.path.join(config.common_folder, 'test_lemmas.yml')), Loader=yaml.SafeLoader)
+            dev_lemmas =  yaml.load(open(os.path.join(config.data_folder, 'dev_lemmas.yml')), Loader=yaml.SafeLoader)
+            test_lemmas = yaml.load(open(os.path.join(config.data_folder, 'test_lemmas.yml')), Loader=yaml.SafeLoader)
             reverse_pos_map = {'1': 'NOUN', '2': 'VERB'}
 
             cut_mapping = {}
@@ -268,11 +268,11 @@ def buildOneOutDictionary(config):
 
                 if not lemma_pos in test_lemmas and not lemma_pos in dev_lemmas:
                     cut_mapping[k] = v
-            pickle.dump(cut_mapping, open(os.path.join(config.common_folder, '{}.pkl'.format(inventory)), 'wb'))
+            pickle.dump(cut_mapping, open(os.path.join(config.data_folder, '{}.pkl'.format(inventory)), 'wb'))
 
-        return pickle.load(open(os.path.join(config.common_folder, '{}.pkl'.format(inventory)),'rb')),\
-               yaml.load(open(os.path.join(config.common_folder, 'dev_lemmas.yml')), Loader=yaml.SafeLoader),\
-               yaml.load(open(os.path.join(config.common_folder, 'test_lemmas.yml')), Loader=yaml.SafeLoader)
+        return pickle.load(open(os.path.join(config.data_folder, '{}.pkl'.format(inventory)),'rb')),\
+               yaml.load(open(os.path.join(config.data_folder, 'dev_lemmas.yml')), Loader=yaml.SafeLoader),\
+               yaml.load(open(os.path.join(config.data_folder, 'test_lemmas.yml')), Loader=yaml.SafeLoader)
 
     path_all_words_semcor = os.path.join(all_words_folder, 'semcor_input.txt')
     path_all_words_dev = os.path.join(all_words_folder, '{}_input.txt'.format(config.dev_name))
@@ -330,14 +330,14 @@ def buildOneOutDictionary(config):
         if not starter in cut_annotated_test_dev_keys:
             cut_mapping[k] = v
 
-    pickle.dump(cut_mapping, open(os.path.join(config.common_folder, '{}.pkl'.format(config.inventory)),'wb'))
-    yaml.dump(dev_lemmas, open(os.path.join(config.common_folder, 'dev_lemmas.yml'),'w'))
-    yaml.dump(test_lemmas, open(os.path.join(config.common_folder,'test_lemmas.yml'),'w'))
+    pickle.dump(cut_mapping, open(os.path.join(config.data_folder, '{}.pkl'.format(config.inventory)),'wb'))
+    yaml.dump(dev_lemmas, open(os.path.join(config.data_folder, 'dev_lemmas.yml'),'w'))
+    yaml.dump(test_lemmas, open(os.path.join(config.data_folder,'test_lemmas.yml'),'w'))
     return cut_mapping, dev_lemmas, test_lemmas
 
 def getPPL(config):
     p, c = 0, 0
-    training_input_txt = os.path.join(config.common_folder, 'input', 'text_files', config.inventory, 'semcor_input.txt')
+    training_input_txt = os.path.join(config.data_folder, 'input', 'text_files', config.inventory, 'semcor_input.txt')
     dict_training_senses = {}
     for line in open(training_input_txt).readlines():
         line = line.strip().split('\t')

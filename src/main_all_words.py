@@ -11,11 +11,11 @@ import src.utils as utils
 
 def prepare_data(config):
     tests = config.tests
-    gold_folder = os.path.join(config.common_folder,  'gold', config.inventory)
+    gold_folder = os.path.join(config.data_folder,  'gold', config.inventory)
     mapping_output = pkl.load(open(config.mapping_path, 'rb'))
     preprocessing.create_data(config)
     for testname in tests:
-        utils.getGoldFilesMapped(os.path.join(config.corpus_folder,'{}/{}.gold.key.txt'.format(testname, testname)),
+        utils.getGoldFilesMapped(os.path.join(config.wsd_data_folder,'{}/{}.gold.key.txt'.format(testname, testname)),
                                  os.path.join(gold_folder, '{}.gold.txt'.format(testname)), mapping_output)
 
 if __name__ == '__main__':

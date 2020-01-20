@@ -2,21 +2,20 @@ import argparse
 import os
 import sys
 
-import config_class
+import src.config_class as config_class
 import test
 import yaml
-import utils
+import src.utils as utils
 import random
-import training
-import numpy as np
+import src.training as training
 import pickle as pkl
-import preprocessing
+import src.preprocessing as preprocessing
 
 def prepare_data(config):
     random.seed(42)
     tests = config.tests
     inventory = config.inventory
-    gold_folder = os.path.join(config.common_folder, 'gold/{}/'.format(inventory))
+    gold_folder = os.path.join(config.data_folder, 'gold/{}/'.format(inventory))
     all_words_mapping_coarse = pkl.load(open(config.mapping_path, 'rb'))
     dev_path = os.path.join(config.one_out_folder, 'dev_lemmas.yml')
     test_path = os.path.join(config.one_out_folder, 'test_lemmas.yml')
@@ -27,10 +26,10 @@ def prepare_data(config):
     test_lemmas = yaml.safe_load(open(test_path))
     for testname in tests:
         if testname != config.dev_name:
-            utils.getGoldFilesMappedOneOut('{}/{}/{}.gold.key.txt'.format(config.corpus_folder, testname, testname),
+            utils.getGoldFilesMappedOneOut('{}/{}/{}.gold.key.txt'.format(config.wsd_data_folder, testname, testname),
                 os.path.join(gold_folder, '{}.gold.txt'.format(testname)), all_words_mapping_coarse, test_lemmas)
         else:
-            utils.getGoldFilesMappedOneOut('{}/{}/{}.gold.key.txt'.format(config.corpus_folder, testname, testname),
+            utils.getGoldFilesMappedOneOut('{}/{}/{}.gold.key.txt'.format(config.wsd_data_folder, testname, testname),
                 os.path.join(gold_folder, '{}.gold.txt'.format(testname)), all_words_mapping_coarse, dev_lemmas)
 
 

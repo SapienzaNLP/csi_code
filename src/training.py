@@ -32,8 +32,8 @@ def process_tokens(temp_tokens: list):
 
 def train_model(config, epochs = 40, batch_size = 64, sentence_max_len = 64, lr=1e-4):
 
-    text_input_folder = os.path.join(config.common_folder, 'input/text_files/{}/'.format(config.inventory))
-    input_folder = os.path.join(config.common_folder, 'input/matrices/{}/'.format(config.inventory))
+    text_input_folder = os.path.join(config.data_folder, 'input/text_files/{}/'.format(config.inventory))
+    input_folder = os.path.join(config.data_folder, 'input/matrices/{}/'.format(config.inventory))
 
     if config.finegrained:
         domains_vocab_path = os.path.join(text_input_folder, 'sensekeys.pkl')
@@ -51,7 +51,7 @@ def train_model(config, epochs = 40, batch_size = 64, sentence_max_len = 64, lr=
         labels_dict[None] = 0
         reverse_labels_dict = {v: k for k, v in labels_dict.items()}
 
-    gold_folder = os.path.join(config.common_folder, 'gold/{}/'.format(config.inventory))
+    gold_folder = os.path.join(config.data_folder, 'gold/{}/'.format(config.inventory))
 
     mapping = pkl.load(open(config.mapping_path,'rb'))
     train_x = pkl.load(open(os.path.join(input_folder, "{}_words.pkl".format(config.training_name)), "rb")).tolist()
@@ -147,12 +147,12 @@ def train_model_one_out(config, epochs = 40, batch_size = 128, lr=1e-4):
     inventory = config.inventory
     training_name = config.training_name
     dev_name = config.dev_name
-    text_input_folder = os.path.join(config.common_folder,'input/text_files/{}/'.format(inventory))
-    input_folder = os.path.join(config.common_folder,'input/matrices/{}/'.format(inventory))
+    text_input_folder = os.path.join(config.data_folder,'input/text_files/{}/'.format(inventory))
+    input_folder = os.path.join(config.data_folder,'input/matrices/{}/'.format(inventory))
     domains_vocab_path = os.path.join(text_input_folder, 'domains.pkl')
     domains_vocab = pkl.load(open(domains_vocab_path, 'rb'))
 
-    gold_folder = os.path.join(config.common_folder, 'gold/{}/'.format(inventory))
+    gold_folder = os.path.join(config.data_folder, 'gold/{}/'.format(inventory))
     labels = sorted([x for x in domains_vocab if x!='untagged'])
     labels_dict = {label: k + 1 for k, label in enumerate(labels)}
     labels_dict[None] = 0
@@ -234,7 +234,7 @@ def train_model_few_shot(config, k, path_checkpoint, epochs = 20, batch_size = 1
     training_name = config.training_name
     dev_name = config.dev_name
     inventory = config.inventory
-    input_folder = os.path.join(config.common_folder, 'input/matrices/{}/'.format(inventory))
+    input_folder = os.path.join(config.data_folder, 'input/matrices/{}/'.format(inventory))
 
     domains_vocab_path = os.path.join(config.all_words_folder, 'domains.pkl')
     domains_vocab = pkl.load(open(domains_vocab_path, 'rb'))
@@ -244,7 +244,7 @@ def train_model_few_shot(config, k, path_checkpoint, epochs = 20, batch_size = 1
     labels_dict[None] = 0
     reverse_labels_dict = {v: k for k, v in labels_dict.items()}
 
-    gold_folder = os.path.join(config.common_folder,'gold/{}/'.format(inventory))
+    gold_folder = os.path.join(config.data_folder,'gold/{}/'.format(inventory))
 
     train_x = pkl.load(open(os.path.join(input_folder, "{}/{}_words.pkl".format(k,training_name)), "rb")).tolist()
     train_y = pkl.load(open(os.path.join(input_folder, '{}/{}_domains.pkl'.format(k,training_name)), "rb")).tolist()
