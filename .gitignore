@@ -1,2 +1,8 @@
 src/__pycache__
 .idea
+output
+.gitignore
+data/all_words
+data/gold
+data/input
+.*
