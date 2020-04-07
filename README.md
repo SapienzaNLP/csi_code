@@ -17,9 +17,9 @@ The arguments for the scripts are the same for each setting:
 
 - ```inventory_name``` is one of the tested inventories, i.e. csi, wndomains, supersenses, sensekeys.
 - ```model_name``` can be either BertDense or BertLSTM.
-- ```data_dir``` is the path where data are located (typically ```./data```).
+- ```data_dir``` is the path where data is located (typically ```./data```).
 - ```data_out``` is the path of the output folder.
-- ```wsd_data_dir``` is the path where wsd data are located (typically ```./wsd_data```)
+- ```wsd_data_dir``` is the path where wsd datasets are located (typically ```./wsd_data```)
 - ```start_from_checkpoint``` is set if continuing training from a dumped checkpoint (optional).
 - ```starting_epoch``` is different from 0 only if ```start_from_checkpoint``` is set. It is the starting epoch for the training (optional).
 - ```do_eval``` is a flag to perform model evaluation only (optional). 
