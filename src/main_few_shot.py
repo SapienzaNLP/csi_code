@@ -1,14 +1,17 @@
+import argparse
 import os
+import pickle as pkl
+import random
 import sys
 import test
+
 import yaml
-import random
-import argparse
-import pickle as pkl
-import src.utils as utils
-import src.training as training
+
 import src.config_class as config_class
 import src.preprocessing as preprocessing
+import src.training as training
+import src.utils as utils
+
 
 def prepare_data(config):
     random.seed(42)
@@ -76,9 +79,6 @@ if __name__ == '__main__':
 
     print('Output files will be saved to {}'.format(config.experiment_folder))
 
-    utils.define_folders_few_shot(config)
-    prepare_data(config)
-
     if len(os.listdir(config.one_out_weights)) > 1:
         print('choose best epoch in {}'.format(config.one_out_weights))
         sys.exit()
@@ -87,6 +87,8 @@ if __name__ == '__main__':
 
     for k in [3, 5, 10]:
         if not args.do_eval:
+            utils.define_folders_few_shot(config)
+            prepare_data(config)
             training.train_model_few_shot(config, k, path_weights, args.epochs)
         best_epoch = utils.pick_epoch(config.experiment_folder, k)
         print('k =', k)

@@ -1,20 +1,21 @@
-import os
 import argparse
+import os
 import pickle as pkl
-import src.test as test
-import src.utils as utils
-import src.training as training
+
 import src.config_class as config_class
 import src.preprocessing as preprocessing
+import src.test as test
+import src.training as training
+import src.utils as utils
 
 
 def prepare_data(config):
     tests = config.tests
-    gold_folder = os.path.join(config.data_folder,  'gold', config.inventory)
+    gold_folder = os.path.join(config.data_folder, 'gold', config.inventory)
     mapping_output = pkl.load(open(config.mapping_path, 'rb'))
     preprocessing.create_data(config)
     for testname in tests:
-        utils.getGoldFilesMapped(os.path.join(config.wsd_data_folder,'{}/{}.gold.key.txt'.format(testname, testname)),
+        utils.getGoldFilesMapped(os.path.join(config.wsd_data_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
                                  os.path.join(gold_folder, '{}.gold.txt'.format(testname)), mapping_output)
 
 
@@ -59,10 +60,9 @@ if __name__ == '__main__':
 
     print('Output files will be saved to {}'.format(config.experiment_folder))
 
-    utils.define_folders(config)
-    prepare_data(config)
-
     if not args.do_eval:
+        utils.define_folders(config)
+        prepare_data(config)
         training.train_model(config, args.epochs)
 
     best_epoch = utils.pick_epoch(config.experiment_folder)

@@ -1,13 +1,14 @@
 import os
-import tqdm
-import torch
-import numpy as np
 import pickle as pkl
+
+import numpy as np
+import torch
+import tqdm
 import utils as utils
-from torch.optim import Adam
-from torch.nn import NLLLoss
-from tensorboardX import SummaryWriter
 from model_bert import BertLSTM, BertDense
+from tensorboardX import SummaryWriter
+from torch.nn import NLLLoss
+from torch.optim import Adam
 
 
 def process_labels(temp_lab: list, labels_dict: dict):
@@ -93,7 +94,7 @@ def train_model(config, epochs, batch_size=64, sentence_max_len=64, lr=1e-4):
     writer = SummaryWriter(os.path.join(config.experiment_folder, 'logs'))
     output_file = open(os.path.join(config.experiment_folder, '{}.output.tsv'.format(config.dev_name)), 'w')
     if config.start_from_checkpoint:
-        load_checkpoints_path = os.path.join(config.experiment_folder, 'models',
+        load_checkpoints_path = os.path.join(config.experiment_folder, 'weights',
                                              'checkpoint_{}.tar'.format(config.starting_epoch))
         model.load_state_dict(torch.load(load_checkpoints_path)['model_state_dict'])
         optimizer.load_state_dict(torch.load(load_checkpoints_path)['optimizer_state_dict'])

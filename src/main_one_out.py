@@ -1,11 +1,12 @@
+import argparse
 import os
 import pickle
-import argparse
-import src.test as test
-import src.utils as utils
-import src.training as training
+
 import src.config_class as config_class
 import src.preprocessing as preprocessing
+import src.test as test
+import src.training as training
+import src.utils as utils
 
 
 def prepare_data(config):
@@ -15,7 +16,7 @@ def prepare_data(config):
 
     mapping_output, dev_lemmas, test_lemmas = preprocessing.create_data_one_out(config)
     for testname in config.tests:
-        if testname!=config.dev_name:
+        if testname != config.dev_name:
             utils.getGoldFilesMappedOneOut(os.path.join(wsd_data_folder, '{}/{}.gold.key.txt'.format(testname, testname)),
                                            os.path.join(gold_folder,'{}.gold.txt'.format(testname)),
                                            all_words_mapping_coarse, test_lemmas)
@@ -64,9 +65,9 @@ if __name__ == '__main__':
 
     print('Output files will be saved to {}'.format(config.experiment_folder))
 
-    utils.define_folders(config)
-    prepare_data(config)
     if not args.do_eval:
+        utils.define_folders(config)
+        prepare_data(config)
         training.train_model_one_out(config, args.epochs)
     best_epoch = utils.pick_epoch(config.experiment_folder)
     test.test_one_out(config, best_epoch)
