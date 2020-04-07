@@ -52,6 +52,10 @@ if __name__ == '__main__':
     parser.add_argument("--data_out", required=True, help="directory for the output")
     parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training and evaluation data "
                                                               "are located, typically ./wsd_data/")
+    parser.add_argument("--do_eval", help="If set, the model performs the evaluation step only. "
+                                          "Otherwise, it will perform both training and evaluation.",
+                        action="store_true")
+
     args = parser.parse_args()
     if args.starting_from_checkpoint:
         print("Starting training from epoch {} checkpoint".format(args.starting_epoch))
@@ -67,7 +71,6 @@ if __name__ == '__main__':
     print('\n\nUsing {} as sense inventory'.format(config.inventory))
     print('Using {} as dev set'.format(config.dev_name))
 
-
     print('Output files will be saved to {}'.format(config.experiment_folder))
 
     utils.define_folders_few_shot(config)
@@ -80,7 +83,8 @@ if __name__ == '__main__':
         path_weights = os.path.join(config.one_out_weights, os.listdir(config.one_out_weights)[0])
 
     for k in [3, 5, 10]:
-        training.train_model_few_shot(config, k, path_weights)
+        if not args.do_eval:
+            training.train_model_few_shot(config, k, path_weights)
         best_epoch = utils.pick_epoch(config.experiment_folder, k)
         print('k =', k)
         test.test_few_shot(config, best_epoch, k)

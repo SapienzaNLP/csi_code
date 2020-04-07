@@ -1,18 +1,20 @@
 import os
 
+
 class Config():
-    def __init__(self, inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch, checkpoint=False):
-        #working_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-        #output_dir = os.path.join(working_dir, 'output_files')
+    def __init__(self, inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch,
+                 checkpoint=False):
+        # working_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+        # output_dir = os.path.join(working_dir, 'output_files')
         self.output_dir = output_dir
-        self.data_folder = data_dir #os.path.join(working_dir, 'data')
-        self.wsd_data_folder = wsd_data_dir #os.path.join(working_dir, 'wsd_data')
-        self.tests = ['senseval2','senseval3','semeval2007','semeval2013','semeval2015']
+        self.data_folder = data_dir  # os.path.join(working_dir, 'data')
+        self.wsd_data_folder = wsd_data_dir  # os.path.join(working_dir, 'wsd_data')
+        self.tests = ['senseval2', 'senseval3', 'semeval2007', 'semeval2013', 'semeval2015']
         self.training_name = 'semcor'
         self.dev_name = 'semeval2007'
         self.inventory = inventory_name
         self.model_name = model_name
-        if self.inventory!="sensekey":
+        if self.inventory != "sensekey":
             self.finegrained = False
         else:
             self.finegrained = True
@@ -23,10 +25,11 @@ class Config():
         if not os.path.exists(self.data_folder):
             os.makedirs(self.data_folder)
 
-class ConfigAllWords(Config):
-    def __init__(self, inventory_name, model_name, starting_epoch, data_dir, output_dir, wsd_data_dir, checkpoint=False):
-        super().__init__(inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch, checkpoint)
 
+class ConfigAllWords(Config):
+    def __init__(self, inventory_name, model_name, starting_epoch, data_dir, output_dir, wsd_data_dir,
+                 checkpoint=False):
+        super().__init__(inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch, checkpoint)
 
         self.data_folder = os.path.join(self.data_folder, 'all_words')
 
@@ -37,10 +40,11 @@ class ConfigAllWords(Config):
 
 
 class ConfigOneOut(Config):
-    def __init__(self, inventory_name, model_name, starting_epoch, data_dir, output_dir, wsd_data_dir, checkpoint=False):
+    def __init__(self, inventory_name, model_name, starting_epoch, data_dir, output_dir, wsd_data_dir,
+                 checkpoint=False):
         super().__init__(inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch, checkpoint)
-        #working_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-        #self.data_folder = os.path.join(working_dir, 'data')
+        # working_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+        # self.data_folder = os.path.join(working_dir, 'data')
         self.mapping_finegrained = os.path.join(self.data_folder, 'sensekey2sensekey.pkl')
         self.all_words_folder = os.path.join(self.data_folder, 'all_words', 'input', 'text_files', self.inventory)
         self.data_folder = os.path.join(self.data_folder, 'one_out')
@@ -49,6 +53,7 @@ class ConfigOneOut(Config):
         if not os.path.exists(self.experiment_folder):
             print('creating output folder in', self.experiment_folder)
             os.makedirs(self.experiment_folder)
+
 
 class ConfigFewShot(Config):
     def __init__(self, inventory_name, model_name, starting_epoch, data_dir, data_out, wsd_data_dir, checkpoint=False):
@@ -61,4 +66,5 @@ class ConfigFewShot(Config):
         if not os.path.exists(self.experiment_folder):
             print('creating output folder in', self.experiment_folder)
             os.makedirs(self.experiment_folder)
-        self.one_out_weights = os.path.join(self.experiment_folder, os.pardir, os.pardir, 'one_out', inventory_name, 'weights')
+        self.one_out_weights = os.path.join(self.experiment_folder, os.pardir, os.pardir, 'one_out', inventory_name,
+                                            'weights')

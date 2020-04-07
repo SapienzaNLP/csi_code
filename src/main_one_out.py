@@ -44,6 +44,9 @@ if __name__ == '__main__':
     parser.add_argument("--data_out", required=True, help="directory for the output")
     parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training and evaluation"
                                                               " data are located, typically ./wsd_data/")
+    parser.add_argument("--do_eval", help="If set, the model performs the evaluation step only. "
+                                          "Otherwise, it will perform both training and evaluation.",
+                        action="store_true")
 
     args = parser.parse_args()
 
@@ -57,11 +60,11 @@ if __name__ == '__main__':
     print('\n\nUsing {} as sense inventory'.format(config.inventory))
     print('\n\nUsing {} as dev set'.format(config.dev_name))
 
-
     print('Output files will be saved to {}'.format(config.experiment_folder))
 
     utils.define_folders(config)
     prepare_data(config)
-    training.train_model_one_out(config, epochs=1)
+    if not args.do_eval:
+        training.train_model_one_out(config)
     best_epoch = utils.pick_epoch(config.experiment_folder)
     test.test_one_out(config, best_epoch)

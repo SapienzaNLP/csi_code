@@ -10,7 +10,7 @@ This repository contains the code to reproduce the experiments reported in [CSI:
 For further information on this work, please visit our [website](https://SapienzaNLP.github.io/csi/).
 
 
-## How to:
+## How to
 Run the python scripts ```src/main_all_words.py```, ```src/main_one_out.py``` and ```src/main_few_shot.py``` to reproduce the experiments for the all-words, one-out and few-shot settings (Table 4 and 6 of the paper, respectively).
 
 The arguments for the scripts are the same for each setting:
@@ -22,10 +22,36 @@ The arguments for the scripts are the same for each setting:
 - ```wsd_data_dir``` is the path where wsd data are located (typically ```./wsd_data```)
 - ```start_from_checkpoint``` is set if continuing training from a dumped checkpoint (optional).
 - ```starting_epoch``` is different from 0 only if ```start_from_checkpoint``` is set. It is the starting epoch for the training (optional).
+- ```do_eval``` is a flag to perform model evaluation only. 
 
 Please note that the few-shot setting continues training from the best epoch achieved with the one-out setting, thus it is necessary to run the one-out script first. 
 
-##
+### Example
+To train a model in the _all words_ setting with CSI sense inventory, run
+
+```python main_all_words.py inventory_name=csi model_name=BertLSTM data_dir=./data/ data_output=./output/ wsd_data_dir=./wsd_data/```
+
+To evaluate a previously trained model, just add the ```do_eval``` parameter:
+
+```python main_all_words.py --inventory_name=csi --model_name=BertLSTM --data_dir=./data/ --data_output=./output/ --wsd_data_dir=./wsd_data/ --do_eval```
+
+Otherwise, to continue training a model for which checkpoints are available (e.g. from epoch 9):
+
+```python main_all_words.py --inventory_name=csi --model_name=BertLSTM --data_dir=./data/ --data_output=./output/ --wsd_data_dir=./wsd_data/ --start_from_checkpoint --starting_epoch=9```
+
+
+## Output 
+The output folder defined with ```data_out``` will be created and filled with results during training. Each experiment configuration (i.e. all words, one out or few shot)
+ will create a new experiment folder inside ```data_out```, that will contain a ```weights``` directory for checkpoints (one for each training epoch) and a ```logs``` directory for TensorBoard logs.
+
+In the experiment folder there will be also the output files for each test dataset. The format, that is the same for each dataset, is as follows:
+    
+    flag instance_id predicted_label gold_label
+
+where ```flag``` can be either ```w``` or ```c``` if the instance is wrong or correct and ```instance_id``` uniquely identifies
+the instance in the dataset. The fields are tab-separated.
+
+Please note that the output file for the dev set is computed (and overwritten) at the end of each epoch, while the output files for the other datasets are computed at evaluation time.
 
 # Acknowledgements
 The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
