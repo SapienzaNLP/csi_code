@@ -28,7 +28,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--inventory_name", required=True, help="The name of the inventory we want to use for the experiments.",
+    parser.add_argument("--inventory_name", required=True, help="The name of the inventory we want "
+                                                                "to use for the experiments.",
                         choices=["csi", "wndomains", "supersenses", "sensekey"])
 
     parser.add_argument("--model_name", required=True, help="Name of the model.", choices=["BertDense", "BertLSTM"])
@@ -41,7 +42,8 @@ if __name__ == '__main__':
                                                  "--starting_from_checkpoint should be True.", type=int, default=0)
     parser.add_argument("--data_dir", required=True, help="directory where data are located, typically ./data/")
     parser.add_argument("--data_out", required=True, help="directory for the output")
-    parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training end evaluation data are located, typically ./wsd_data/")
+    parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training and evaluation"
+                                                              " data are located, typically ./wsd_data/")
 
     args = parser.parse_args()
 

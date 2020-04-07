@@ -1,14 +1,13 @@
-import argparse
 import os
 import sys
-
-import src.config_class as config_class
 import test
 import yaml
-import src.utils as utils
 import random
-import src.training as training
+import argparse
 import pickle as pkl
+import src.utils as utils
+import src.training as training
+import src.config_class as config_class
 import src.preprocessing as preprocessing
 
 def prepare_data(config):
@@ -37,7 +36,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--inventory_name", required=True, help="The name of the inventory we want to use for the experiments.",
+    parser.add_argument("--inventory_name", required=True, help="The name of the inventory we want to "
+                                                                "use for the experiments.",
                         choices=["csi", "wndomains", "supersenses", "sensekey"])
 
     parser.add_argument("--model_name", required=True, help="Name of the model.", choices=["BertDense", "BertLSTM"])
@@ -50,16 +50,19 @@ if __name__ == '__main__':
                                                  "--starting_from_checkpoint should be True.", type=int, default=0)
     parser.add_argument("--data_dir", required=True, help="directory where data are located, typically ./data/")
     parser.add_argument("--data_out", required=True, help="directory for the output")
-    parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training end evaluation data are located, typically ./wsd_data/")
+    parser.add_argument("--wsd_data_dir", required=True, help="directory where wsd training and evaluation data "
+                                                              "are located, typically ./wsd_data/")
     args = parser.parse_args()
     if args.starting_from_checkpoint:
         print("Starting training from epoch {} checkpoint".format(args.starting_epoch))
 
-        config = config_class.ConfigFewShot(args.inventory_name, args.model_name, args.starting_epoch, args.data_dir, args.data_out, args.wsd_data_dir,
+        config = config_class.ConfigFewShot(args.inventory_name, args.model_name, args.starting_epoch, args.data_dir,
+                                            args.data_out, args.wsd_data_dir,
                                         args.start_from_checkpoint)
 
     else:
-        config = config_class.ConfigFewShot(args.inventory_name, args.model_name, args.starting_epoch, args.data_dir, args.data_out, args.wsd_data_dir)
+        config = config_class.ConfigFewShot(args.inventory_name, args.model_name, args.starting_epoch, args.data_dir,
+                                            args.data_out, args.wsd_data_dir)
 
     print('\n\nUsing {} as sense inventory'.format(config.inventory))
     print('Using {} as dev set'.format(config.dev_name))
