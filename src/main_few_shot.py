@@ -56,6 +56,9 @@ if __name__ == '__main__':
                                           "Otherwise, it will perform both training and evaluation.",
                         action="store_true")
 
+    parser.add_argument("--epochs", help="Number of training epochs.", type=int, default=20)
+
+
     args = parser.parse_args()
     if args.starting_from_checkpoint:
         print("Starting training from epoch {} checkpoint".format(args.starting_epoch))
@@ -84,7 +87,7 @@ if __name__ == '__main__':
 
     for k in [3, 5, 10]:
         if not args.do_eval:
-            training.train_model_few_shot(config, k, path_weights)
+            training.train_model_few_shot(config, k, path_weights, args.epochs)
         best_epoch = utils.pick_epoch(config.experiment_folder, k)
         print('k =', k)
         test.test_few_shot(config, best_epoch, k)

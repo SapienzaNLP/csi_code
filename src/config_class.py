@@ -4,11 +4,10 @@ import os
 class Config():
     def __init__(self, inventory_name, model_name, data_dir, output_dir, wsd_data_dir, starting_epoch,
                  checkpoint=False):
-        # working_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-        # output_dir = os.path.join(working_dir, 'output_files')
+
         self.output_dir = output_dir
-        self.data_folder = data_dir  # os.path.join(working_dir, 'data')
-        self.wsd_data_folder = wsd_data_dir  # os.path.join(working_dir, 'wsd_data')
+        self.data_folder = data_dir
+        self.wsd_data_folder = wsd_data_dir
         self.tests = ['senseval2', 'senseval3', 'semeval2007', 'semeval2013', 'semeval2015']
         self.training_name = 'semcor'
         self.dev_name = 'semeval2007'

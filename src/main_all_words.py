@@ -42,6 +42,8 @@ if __name__ == '__main__':
                                           "Otherwise, it will perform both training and evaluation.",
                         action="store_true")
 
+    parser.add_argument("--epochs", help="Number of training epochs.", type=int, default=40)
+
     args = parser.parse_args()
 
     if args.starting_from_checkpoint:
@@ -61,7 +63,7 @@ if __name__ == '__main__':
     prepare_data(config)
 
     if not args.do_eval:
-        training.train_model(config)
+        training.train_model(config, args.epochs)
 
     best_epoch = utils.pick_epoch(config.experiment_folder)
     test.test(config, best_epoch)

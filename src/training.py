@@ -33,7 +33,7 @@ def process_tokens(temp_tokens: list):
     return tokens
 
 
-def train_model(config, epochs=40, batch_size=64, sentence_max_len=64, lr=1e-4):
+def train_model(config, epochs, batch_size=64, sentence_max_len=64, lr=1e-4):
     text_input_folder = os.path.join(config.data_folder, 'input/text_files/{}/'.format(config.inventory))
     input_folder = os.path.join(config.data_folder, 'input/matrices/{}/'.format(config.inventory))
 
@@ -148,7 +148,7 @@ def train_model(config, epochs=40, batch_size=64, sentence_max_len=64, lr=1e-4):
     writer.close()
 
 
-def train_model_one_out(config, epochs=40, batch_size=128, lr=1e-4):
+def train_model_one_out(config, epochs, batch_size=128, lr=1e-4):
     inventory = config.inventory
     training_name = config.training_name
     dev_name = config.dev_name
@@ -237,7 +237,7 @@ def train_model_one_out(config, epochs=40, batch_size=128, lr=1e-4):
     writer.close()
 
 
-def train_model_few_shot(config, k, path_checkpoint, epochs=20, batch_size=128, lr=1e-4):
+def train_model_few_shot(config, k, path_checkpoint, epochs, batch_size=128, lr=1e-4):
     training_name = config.training_name
     dev_name = config.dev_name
     inventory = config.inventory

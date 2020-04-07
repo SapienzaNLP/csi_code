@@ -41,17 +41,34 @@ Otherwise, to continue training a model for which checkpoints are available (e.g
 
 
 ## Output 
-The output folder defined with ```data_out``` will be created and filled with results during training. Each experiment configuration (i.e. all words, one out or few shot)
- will create a new experiment folder inside ```data_out```, that will contain a ```weights``` directory for checkpoints (one for each training epoch) and a ```logs``` directory for TensorBoard logs.
+The output folder defined with ```data_out``` will be created and filled with results during training and test. 
+For each experiment configuration (i.e. all words, one out or few shot) will be created a folder that will contain results for each sense inventory used.
+Let's assume we run the ```all_words``` experiment with ```csi```; what we have will be:
 
-In the experiment folder there will be also the output files for each test dataset. The format, that is the same for each dataset, is as follows:
+    +-- output_folder
+    |  +-- csi
+    |      +-- weights
+    |      +-- logs
+    |      output_files
+    |      processed_input_files
+
+Checkpoints for each training epoch will be contained inside the ```weights``` directory, while the ```logs``` directory 
+will contain logs for TensorBoard.
+
+There will be one tab-separated output file for each test dataset. The format of the files, is the following:
     
-    flag instance_id predicted_label gold_label
+```flag instance_id predicted_label gold_label```
 
-where ```flag``` can be either ```w``` or ```c``` if the instance is wrong or correct and ```instance_id``` uniquely identifies
-the instance in the dataset. The fields are tab-separated.
+where ```flag``` is ```w``` or ```c``` for wrong and correct instances, respectively and ```instance_id``` uniquely identifies
+the instance in the dataset.
+Please note that the output file for the dev set is computed (and overwritten) at the end of each training epoch,
+ while the output files for the other datasets are computed at test time.
 
-Please note that the output file for the dev set is computed (and overwritten) at the end of each epoch, while the output files for the other datasets are computed at evaluation time.
+The processed input files, instead, are computed both for the training and the test datasets, and the format is the following:
+
+```instance_id target_word gold_label target_sentence```
+
+Once again, the files are tab-separated.
 
 # Acknowledgements
 The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
