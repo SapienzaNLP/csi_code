@@ -11,16 +11,21 @@ For further information on this work, please visit our [website](https://Sapienz
 
 
 ## How to:
-Run the python scripts ```src/main_all_words.py```, ```src/main_one_out.py``` and ```src/main_few_shot.py``` to reproduce the experiments for the all-words, one-out and few-shot settings, respectively.
+Run the python scripts ```src/main_all_words.py```, ```src/main_one_out.py``` and ```src/main_few_shot.py``` to reproduce the experiments for the all-words, one-out and few-shot settings (Table 4 and 6 of the paper, respectively).
 
 The arguments for the scripts are the same for each setting:
 
 - ```inventory_name``` is one of the tested inventories, i.e. csi, wndomains, supersenses, sensekeys.
 - ```model_name``` can be either BertDense or BertLSTM.
-- ```start_from_checkpoint``` is True if starting training from a dumped checkpoint.
-- ```starting_epoch``` is different from 0 only if ```start_from_checkpoint``` is True. It is the starting epoch for the training.
+- ```data_dir``` is the path where data are located (typically ```./data/```).
+- ```data_out``` is the path of the output folder.
+- ```wsd_data_dir``` is the path where wsd data are located (typically ```./wsd_data```)
+- ```start_from_checkpoint``` is set if continuing training from a dumped checkpoint (optional).
+- ```starting_epoch``` is different from 0 only if ```start_from_checkpoint``` is set. It is the starting epoch for the training (optional).
 
 Please note that the few-shot setting continues training from the best epoch achieved with the one-out setting, thus it is necessary to run the one-out script first. 
+
+##
 
 # Acknowledgements
 The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
