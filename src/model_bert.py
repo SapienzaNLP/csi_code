@@ -1,10 +1,11 @@
 import abc
-import torch
 from math import sqrt
 from typing import Union, List
-from torch.nn import Module, Parameter
+
+import torch
 from torch.nn import LSTM, Dropout, Linear
-from torch.nn.functional import softmax, tanh
+from torch.nn import Module, Parameter
+from torch.nn.functional import softmax
 
 if torch.cuda.is_available():
     FloatTensorType = torch.cuda.FloatTensor
@@ -12,6 +13,7 @@ if torch.cuda.is_available():
 else:
     FloatTensorType = torch.FloatTensor
     LongTensorType = torch.LongTensor
+
 
 class BaseContextualEmbedder(torch.nn.Module, metaclass=abc.ABCMeta):
     '''This class is taken from QBERT, by Michele Bevilacqua and Roberto Navigli.
@@ -225,10 +227,11 @@ class Attention(Module):
         self.weight = Parameter(FloatTensorType(1, in_features))
         stdv = 1. / sqrt(self.weight.size(0))
         self.weight.data.uniform_(-stdv, stdv)
+        self.tanh = torch.nn.Tanh()
 
     def forward(self, inputs):
         h = torch.transpose(inputs, 1, 2)
-        u = tanh(h)
+        u = self.tanh(h)
         u = torch.matmul(self.weight, u)
         a = softmax(u, dim=2)
         a = torch.transpose(a, 1, 2)
