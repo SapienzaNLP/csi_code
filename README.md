@@ -10,6 +10,18 @@ This repository contains the code to reproduce the experiments reported in [CSI:
 For further information on this work, please visit our [website](https://SapienzaNLP.github.io/csi/).
 
 
+
+```@inproceedings{lacerraetal:2020,
+  title={ {CSI}: A Coarse Sense Inventory for 85\% Word Sense Disambiguation},
+  author={Lacerra, Caterina and Bevilacqua, Michele and Pasini, Tommaso and Navigli, Roberto},
+  booktitle={Proceedings of the 34th Conference on Artificial Intelligence},
+  pages={8123--8130},
+  publisher={{AAAI} Press},
+  year={2020}
+}
+```
+
+
 ## How to
 Run the python scripts ```src/main_all_words.py```, ```src/main_one_out.py``` and ```src/main_few_shot.py``` to reproduce the experiments for the all-words, one-out and few-shot settings (Table 4 and 6 of the paper, respectively).
 
