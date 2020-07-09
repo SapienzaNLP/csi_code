@@ -18,7 +18,8 @@ For further information on this work, please visit our [website](https://Sapienz
   booktitle={Proceedings of the 34th Conference on Artificial Intelligence},
   pages={8123--8130},
   publisher={{AAAI} Press},
-  year={2020}
+  year={2020},
+  doi = {10.1609/aaai.v34i05.6324}
 }
 ```
 
